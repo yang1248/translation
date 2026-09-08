@@ -148,7 +148,9 @@ public sealed class GlobalHotkeyService : IDisposable
             "f1" or "f2" or "f3" or "f4" or "f5" or "f6" or "f7" or "f8" or "f9"
                 or "f10" or "f11" or "f12" => (uint)(0x70 + Array.IndexOf(
                     new[] { "f1", "f2", "f3", "f4", "f5", "f6", "f7", "f8", "f9", "f10", "f11", "f12" }, name)),
-            _ => name.Length == 1 && char.IsAsciiLetter(name[0]) ? name[0] - 'a' + 0x41 : 0
+            _ => name.Length == 1 && char.IsAsciiLetter(name[0])
+                ? (uint)(0x41 + name[0] - 'a')
+                : 0u
         };
 
         key = code;

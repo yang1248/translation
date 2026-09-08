@@ -29,6 +29,10 @@ public sealed class AudioLoopbackCapture : IDisposable
         {
             Prepare();
         }
+        if (_capture is null)
+        {
+            throw new InvalidOperationException("无法创建系统音频捕获设备。");
+        }
 
         _capture.DataAvailable += OnDataAvailable;
         _capture.RecordingStopped += OnRecordingStopped;

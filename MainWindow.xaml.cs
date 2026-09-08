@@ -11,6 +11,9 @@ using RealtimeTranslator.Models;
 using RealtimeTranslator.Pipeline;
 using RealtimeTranslator.Services;
 using RealtimeTranslator.Translation;
+using WpfClipboard = System.Windows.Clipboard;
+using WpfColor = System.Windows.Media.Color;
+using WpfSaveFileDialog = Microsoft.Win32.SaveFileDialog;
 
 namespace RealtimeTranslator;
 
@@ -174,12 +177,12 @@ public partial class MainWindow : Window
     {
         StateText.Text = text;
         StateDot.Fill = connecting
-            ? new SolidColorBrush(Color.FromRgb(0xE8, 0xA4, 0x2B))
+            ? new SolidColorBrush(WpfColor.FromRgb(0xE8, 0xA4, 0x2B))
             : paused
-                ? new SolidColorBrush(Color.FromRgb(0xE8, 0xA4, 0x2B))
+                ? new SolidColorBrush(WpfColor.FromRgb(0xE8, 0xA4, 0x2B))
                 : running
-                    ? new SolidColorBrush(Color.FromRgb(0x2E, 0x8B, 0x57))
-                    : new SolidColorBrush(Color.FromRgb(0x9A, 0xA5, 0xB1));
+                    ? new SolidColorBrush(WpfColor.FromRgb(0x2E, 0x8B, 0x57))
+                    : new SolidColorBrush(WpfColor.FromRgb(0x9A, 0xA5, 0xB1));
         StartPauseButton.Content = paused ? "继续" : running ? "暂停" : "开始";
     }
 
@@ -271,7 +274,7 @@ public partial class MainWindow : Window
     {
         if (!string.IsNullOrWhiteSpace(_lastTranslated))
         {
-            Clipboard.SetText(_lastTranslated);
+            WpfClipboard.SetText(_lastTranslated);
             SourceStatusText.Text = "当前译文已复制。";
         }
     }
@@ -287,7 +290,7 @@ public partial class MainWindow : Window
     {
         if (HistoryList.SelectedItem is HistoryEntry entry)
         {
-            Clipboard.SetText(entry.TranslatedText);
+            WpfClipboard.SetText(entry.TranslatedText);
             SourceStatusText.Text = "所选译文已复制。";
         }
     }
@@ -300,7 +303,7 @@ public partial class MainWindow : Window
             return;
         }
 
-        var dialog = new SaveFileDialog
+        var dialog = new WpfSaveFileDialog
         {
             Title = "导出历史译文",
             Filter = "文本文件 (*.txt)|*.txt",

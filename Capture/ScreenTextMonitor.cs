@@ -1,8 +1,8 @@
 using System.Drawing;
 using CultureInfo = System.Globalization.CultureInfo;
 using System.Text.RegularExpressions;
+using System.IO;
 using System.Windows.Threading;
-using RealtimeTranslator.Configuration;
 using RealtimeTranslator.Models;
 using Windows.Graphics.Imaging;
 using Windows.Media.Ocr;
@@ -13,7 +13,6 @@ namespace RealtimeTranslator.Capture;
 
 public sealed class ScreenTextMonitor
 {
-    private readonly SettingsService _settingsService;
     private readonly AppSettings _settings;
     private readonly Dispatcher _dispatcher;
     private DispatcherTimer? _timer;
@@ -24,9 +23,8 @@ public sealed class ScreenTextMonitor
     private bool _running;
     private int _captureFailures;
 
-    public ScreenTextMonitor(SettingsService settingsService, AppSettings settings, Dispatcher dispatcher)
+    public ScreenTextMonitor(AppSettings settings, Dispatcher dispatcher)
     {
-        _settingsService = settingsService;
         _settings = settings;
         _dispatcher = dispatcher;
     }

@@ -295,7 +295,7 @@ public sealed class AppController : IDisposable
             _main.SetRegion(region);
         }
 
-        _screenMonitor = new ScreenTextMonitor(_settingsService, _settings, _main.Dispatcher);
+        _screenMonitor = new ScreenTextMonitor(_settings, _main.Dispatcher);
         _screenMonitor.LineRecognized += text => _coordinator.SubmitSourceLine(text, "Screen");
         _screenMonitor.Message += message => _main.Dispatcher.BeginInvoke(() => _main.ShowStatus(message));
         _screenMonitor.Start(_region);
@@ -368,7 +368,12 @@ public sealed class AppController : IDisposable
 
     private RegionInfo? PromptRegion()
     {
+        var restoreTranslation = _translation.IsVisible;
         _main.Hide();
+        if (restoreTranslation)
+        {
+            _translation.Hide();
+        }
         try
         {
             var cursor = WinForms.Cursor.Position;
@@ -391,6 +396,10 @@ public sealed class AppController : IDisposable
             if (!_isExiting)
             {
                 ShowMainWindow();
+                if (restoreTranslation)
+                {
+                    _translation.ShowAndActivate();
+                }
             }
         }
     }

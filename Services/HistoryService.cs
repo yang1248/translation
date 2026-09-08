@@ -66,8 +66,8 @@ public sealed class HistoryService
         var builder = new StringBuilder();
         foreach (var item in entries)
         {
-            var source = item.SourceText.Replace("\r", " ").Replace("\n", " ");
-            var translated = item.TranslatedText.Replace("\r", " ").Replace("\n", " ");
+            var source = CleanCell(item.SourceText);
+            var translated = CleanCell(item.TranslatedText);
             builder.Append(CultureInfo.InvariantCulture, $"{item.Index}\t");
             builder.Append(item.Time.ToString("yyyy-MM-dd HH:mm:ss", CultureInfo.InvariantCulture)).Append('\t');
             builder.Append(source).Append('\t');
@@ -76,4 +76,7 @@ public sealed class HistoryService
 
         await File.WriteAllTextAsync(filePath, builder.ToString(), new UTF8Encoding(false));
     }
+
+    private static string CleanCell(string text) =>
+        text.Replace("\r", " ").Replace("\n", " ").Replace("\t", " ");
 }
